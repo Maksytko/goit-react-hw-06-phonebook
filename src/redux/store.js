@@ -1,44 +1,12 @@
-import {
-  configureStore,
-  createReducer,
-  combineReducers,
-} from "@reduxjs/toolkit";
-import { deleteItem, changeFilter, addItem } from "./actions";
+import { configureStore, combineReducers } from "@reduxjs/toolkit";
 import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
-
-const initialState = {
-  contacts: {
-    items: [],
-    filter: "",
-  },
-};
+import contactsReducer from "./reducer";
 
 const persistConfig = {
   key: "contacts",
   storage,
 };
-
-const contactsReducer = createReducer(initialState, {
-  [addItem]: ({ contacts }, { payload }) => ({
-    contacts: {
-      ...contacts,
-      items: [...contacts.items, payload],
-    },
-  }),
-  [deleteItem]: ({ contacts }, { payload }) => ({
-    contacts: {
-      ...contacts,
-      items: contacts.items.filter((item) => item.id !== payload),
-    },
-  }),
-  [changeFilter]: ({ contacts }, { payload }) => ({
-    contacts: {
-      ...contacts,
-      filter: payload,
-    },
-  }),
-});
 
 const persistedReducer = persistReducer(
   persistConfig,
